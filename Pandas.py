@@ -1,23 +1,16 @@
-import numpy as np
+iimport pandas as panda
 
-my_data = np.getfromtxt( 'calles_de_medellin_con_acoso.csv' , delimiter=' ; ' )
+my_data = panda.read_csv('CallesMedellin.csv', sep = ";")
 
+vertice = []
+Aristas = []
+calles = my_data.iloc[: ,1]
 
-with open("calles_de_medellin_con_acoso.csv") as archivo:
-   cadenaDeCaracteres = archivo.read( )
-
-
-
-with open("calles_de_medellin_con_acoso.csv") as archivo:
-   listaDeLineasDondeCadaLineaEsUnaCadena = archivo.readlines( )
-
-
-with open("poligono_de_medellin.csv") as archivo:
-   cadenaDeCaracteres = archivo.read( )
-
-
-with open("poligono_de_medellin.csv") as archivo:
-   listaDeLineasDondeCadaLineaEsUnaCadena = archivo.readlines( )
+for i in calles:
+	if i in vertice:
+		pass
+	else:
+		vertice.append(i)
 
 import math
 
@@ -109,29 +102,16 @@ class Grafica:
 		else:
 			return False
 
-class main:
-	g = Grafica()
-	g.agregarVertice(1)
-	g.agregarVertice(2)
-	g.agregarVertice(3)
-	g.agregarVertice(4)
-	g.agregarVertice(5)
-	g.agregarVertice(6)
-	g.agregarArista(1, 6, 14)
-	g.agregarArista(1, 2, 7)
-	g.agregarArista(1, 3, 9)
-	g.agregarArista(2, 3, 10)
-	g.agregarArista(2, 4, 15)
-	g.agregarArista(3, 4, 11)
-	g.agregarArista(3, 6, 2)
-	g.agregarArista(4, 5, 6)
-	g.agregarArista(5, 6, 9)
+g = Grafica()
 
-	print("\n\nLa ruta más rápida por Dijkstra junto con su costo es:")
-	g.dijkstra(1)
-	print(g.camino(1, 6))
-	print("\nLos valores finales de la gráfica son los siguietes:")
-	g.imprimirGrafica()
+for i in range(len(vertice)):
+    vertice_dato = vertice[i]
+    g.agregarVertice(vertice_dato)
 
- 
- 
+for i in range(0,68749):
+	g.agregarArista(my_data.loc[i,'origin'],my_data.loc[i,'destination'], my_data.loc[i,'harassmentRisk']+my_data.loc[i,'length'])
+
+g.dijkstra(vertice[0])
+print("El mejor camino es: ...")
+print(g.camino(vertice[0], vertice[20]))
+print(vertice[50])
